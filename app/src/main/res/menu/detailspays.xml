@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_sendinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/baseline_camera_24"
+        android:title="Test"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_add_client"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Item"
+        app:showAsAction="ifRoom" />
+</menu>
