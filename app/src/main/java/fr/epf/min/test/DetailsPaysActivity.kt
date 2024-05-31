@@ -14,6 +14,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 
 const val TAG = "TEST_PAYS"
 
@@ -48,15 +49,53 @@ class DetailsPaysActivity : AppCompatActivity () {
                 Log.d("TEST", "testing")
                 synchro()
             }
+            R.id.action_recherche_france ->{
+                Log.d("TEST", "Testing France")
+                rechercheFrance()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun rechercheFrance() {
+        val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+        val client = OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor(httpLoggingInterceptor)
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://restcountries.com/v3.1/")
+            .addConverterFactory(MoshiConverterFactory.create())
+            .client(client)
+            .build()
+
+        val paysService =
+            retrofit.create(PaysService::class.java)
+        runBlocking {
+            try {
+                val pays = paysService.getUnPays("france")
+                Log.d(TAG, "synchro: ${pays}")
+                Affichage(pays)
+            }catch (e: Exception){
+                Log.e(TAG,"Erreur lors de la requête API : ${e.message}")
+            }
+        }
+    }
+
     private fun synchro() {
 
         val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
         val client = OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(httpLoggingInterceptor)
             .build()
 
@@ -74,13 +113,24 @@ class DetailsPaysActivity : AppCompatActivity () {
 //        }
 //
         runBlocking {
-            //val pays = paysService.getUnPays("france")
-            val pays = paysService.getPaysBySubregion("Western Europe")
-            //val pays = paysService.getAllPays()
-            Log.d(TAG, "synchro: ${pays}")
+            try {
+                val pays = paysService.getAllPays()
+                //val pays = paysService.getUnPays("france")
+                //val pays = paysService.getPaysBySubregion("Western Europe")
+                Log.d(TAG, "synchro: ${pays}")
+                Affichage(pays)
+            }catch (e: Exception){
+                Log.e(TAG,"Erreur lors de la requête API : ${e.message}")
+            }
+        }
+    }
 
-            val unPays = pays.map {
-                Pays(it.name.common,
+
+    private fun Affichage(countryS : List<Country>){
+        val paysAffiche = countryS.map {
+            try {
+                Pays(
+                    it.name.common,
                     it.name.official,
                     it.region,
                     it.capital[0],
@@ -88,15 +138,23 @@ class DetailsPaysActivity : AppCompatActivity () {
                     it.population,
                     it.flags.png
                 )
+            }catch (e: Exception){
+                Log.e(TAG, "Erreur lors de la transformation de l'objet Pays: ${e.message} + $it")
+                Pays(
+                    it.name.common ?: "Nom inconnu",
+                    it.name.official ?: "Nom officiel inconnu",
+                    it.region ?: "Région inconnue",
+                    if (it.capital.isNotEmpty()) it.capital[0] else "Capitale inconnue",
+                    it.currencies?.toString() ?: "Monnaies inconnues",
+                    it.population ?: 0,
+                    it.flags?.png ?: ""
+                )
             }
-
-            val adapter = PaysAdapter(unPays)
-
-           recyclerView.adapter = adapter
-
         }
+        val adapter = PaysAdapter(paysAffiche)
 
-
+        recyclerView.adapter = adapter
 
     }
+
 }

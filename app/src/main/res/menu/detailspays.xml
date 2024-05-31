@@ -9,9 +9,9 @@
         android:title="Test"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_add_client"
+        android:id="@+id/action_recherche_france"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="Item"
+        android:title="france"
         app:showAsAction="ifRoom" />
 </menu>
