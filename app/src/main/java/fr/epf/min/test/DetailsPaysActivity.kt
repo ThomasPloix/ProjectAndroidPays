@@ -1,11 +1,13 @@
 package fr.epf.min.test
 
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 
 import android.view.MenuItem
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -51,13 +53,25 @@ class DetailsPaysActivity : AppCompatActivity () {
             }
             R.id.action_recherche_france ->{
                 Log.d("TEST", "Testing France")
-                rechercheFrance()
+                val editText = EditText(this).apply {
+                    hint = "Entrez le nom ici"
+                }
+
+                AlertDialog.Builder(this).apply {
+                    setTitle("Recherchez un pays")
+                    setView(editText)
+                    setPositiveButton("OK") { _, _ ->
+                        val userInput = editText.text.toString()
+                        rechercheFrance(userInput)
+                    }
+                    setNegativeButton("Annuler", null)
+                }.show()
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun rechercheFrance() {
+    private fun rechercheFrance(pays: String) {
         val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
@@ -78,7 +92,7 @@ class DetailsPaysActivity : AppCompatActivity () {
             retrofit.create(PaysService::class.java)
         runBlocking {
             try {
-                val pays = paysService.getUnPays("france")
+                val pays = paysService.getUnPays(pays)
                 Log.d(TAG, "synchro: ${pays}")
                 Affichage(pays)
             }catch (e: Exception){
