@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
+const val PAYS_ID_EXTRA = "PaysId"
 
 class PaysViewHolder(view : View) : RecyclerView.ViewHolder(view)
 
