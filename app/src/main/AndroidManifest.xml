@@ -23,6 +23,8 @@
         </activity>
         <activity android:name=".DetailsPaysActivity"
             android:exported="true" />
+        <activity android:name=".ListPaysActivity"
+            android:exported="true" />
 
     </application>
 

@@ -4,9 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.widget.Button
 
 class MainActivity : AppCompatActivity () {
@@ -18,7 +15,7 @@ class MainActivity : AppCompatActivity () {
         val detailsButon = findViewById<Button>(R.id.home_detailspays_button)
 
         detailsButon.setOnClickListener(){
-            val intent = Intent(this, DetailsPaysActivity::class.java)
+            val intent = Intent(this, ListPaysActivity::class.java)
             Log.d("TEST","Click")
 
             startActivity(intent)
