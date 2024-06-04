@@ -12,10 +12,17 @@ class MainActivity : AppCompatActivity () {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val detailsButon = findViewById<Button>(R.id.home_detailspays_button)
+        val detailsButton = findViewById<Button>(R.id.home_detailspays_button)
+        val jeubonusButton = findViewById<Button>(R.id.home_jeubonus_button)
 
-        detailsButon.setOnClickListener(){
+        detailsButton.setOnClickListener(){
             val intent = Intent(this, ListPaysActivity::class.java)
+            Log.d("TEST","Click")
+
+            startActivity(intent)
+        }
+        jeubonusButton.setOnClickListener(){
+            val intent = Intent(this, BonusGameActivity::class.java)
             Log.d("TEST","Click")
 
             startActivity(intent)

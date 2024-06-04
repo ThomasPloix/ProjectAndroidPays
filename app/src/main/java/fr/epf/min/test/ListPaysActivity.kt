@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.runBlocking
@@ -16,14 +17,16 @@ import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 const val TAG = "TEST_PAYS"
 
 class ListPaysActivity : AppCompatActivity () {
 
-        lateinit var recyclerView: RecyclerView
-        lateinit var listeAllPays: List<Pays>
+        private lateinit var recyclerView: RecyclerView
+        private lateinit var listeAllPays: List<Pays>
+        private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +39,22 @@ class ListPaysActivity : AppCompatActivity () {
 
         val pays = Pays.generate(1)
         recyclerView.adapter =PaysAdapter(pays)
-        synchro()
+        searchView = findViewById(R.id.search)
+        searchView.clearFocus()
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus()
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    rechercheFrance(newText)
+                } else {
+                    rechercheFrance("")
+                }
+                return false
+            }
+        })
     }
 
 
@@ -51,6 +69,7 @@ class ListPaysActivity : AppCompatActivity () {
         when(item.itemId){
             R.id.action_sendinfo ->{
                 Log.d("TEST", "testing")
+                runBlocking { synchro() }
             }
             R.id.action_recherche_france ->{
                 Log.d("TEST", "Testing France")
@@ -87,15 +106,15 @@ class ListPaysActivity : AppCompatActivity () {
         }
     }
 
-    private fun synchro() {
+    private suspend fun synchro() {
 
         val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
         val client = OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(40, TimeUnit.SECONDS)
+            .writeTimeout(25, TimeUnit.SECONDS)
+            .readTimeout(40, TimeUnit.SECONDS)
             .addInterceptor(httpLoggingInterceptor)
             .build()
 
@@ -112,16 +131,15 @@ class ListPaysActivity : AppCompatActivity () {
 //            val users = userService.getUsers(15)
 //        }
 //
-        runBlocking {
-            try {
-                var pays = paysService.getAllPays()
-                //val pays = paysService.getUnPays("france")
-                //val pays = paysService.getPaysBySubregion("Western Europe")
-                Log.d(TAG, "synchro: ${pays}")
-                Affichage(pays)
-            }catch (e: Exception){
-                Log.e(TAG,"Erreur lors de la requête API : ${e.message}")
-            }
+
+        try {
+            var pays = paysService.getAllPays()
+            //val pays = paysService.getUnPays("france")
+            //val pays = paysService.getPaysBySubregion("Western Europe")
+            Log.d(TAG, "synchro: ${pays}")
+            Affichage(pays)
+        }catch (e: Exception){
+            Log.e(TAG,"Erreur lors de la requête API : ${e.message}")
         }
     }
 

@@ -25,6 +25,8 @@
             android:exported="true" />
         <activity android:name=".ListPaysActivity"
             android:exported="true" />
+        <activity android:name=".BonusGameActivity"
+            android:exported="true" />
 
     </application>
 

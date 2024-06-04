@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Pays Lookers</string>
     <string name="home_detailspays_button_string">Details d\'un pays</string>
+    <string name="home_jeubonusbutton_string">Jeu bonus</string>
     <string name="pays_name">Nom du pays</string>
     <string name="pays_region">Région</string>
     <string name="pays_capital">Capitale</string>
