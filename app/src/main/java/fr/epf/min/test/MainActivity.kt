@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity () {
             startActivity(intent)
         }
         jeubonusButton.setOnClickListener(){
-            val intent = Intent(this, BonusGameActivity::class.java)
+            val intent = Intent(this, JeuBonusActivity::class.java)
             Log.d("TEST","Click")
 
             startActivity(intent)

@@ -15,7 +15,7 @@ const val PAYS_ID_EXTRA = "PaysId"
 
 class PaysViewHolder(view : View) : RecyclerView.ViewHolder(view)
 
-class PaysAdapter (val pays : List<Pays>): RecyclerView.Adapter<PaysViewHolder>(){
+class PaysAdapter (private val pays : List<Pays>): RecyclerView.Adapter<PaysViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PaysViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

@@ -1,110 +1,46 @@
 package fr.epf.min.test
 
-
-
-import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-
 import android.view.MenuItem
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.runBlocking
-import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-const val TAG = "TEST_PAYS"
-
-class ListPaysActivity : AppCompatActivity () {
-
-        private lateinit var recyclerView: RecyclerView
-        private lateinit var listeAllPays: List<Pays>
-        private lateinit var searchView: SearchView
-
+class JeuBonusActivity : AppCompatActivity() {
+    private lateinit var listeAllPays: List<Pays>
+    private lateinit var recyclerView: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list_pays)
-
-        recyclerView = findViewById<RecyclerView>(R.id.list_pays_recyclerview)
+        setContentView(R.layout.activity_jeu_bonus)
+        recyclerView = findViewById<RecyclerView>(R.id.jeu_bonus_recyclerview)
 
         recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        val pays = Pays.generate(1)
-        recyclerView.adapter =PaysAdapter(pays)
-        searchView = findViewById(R.id.search)
-        searchView.clearFocus()
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                searchView.clearFocus()
-                return true
-            }
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null) {
-                    rechercheFrance(newText)
-                } else {
-                    rechercheFrance("")
-                }
-                return false
-            }
-        })
+        val pays = Pays.generate(10)
+        recyclerView.adapter =JeuBonusAdapter(pays)
     }
-
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        Log.d("TEST","Creat")
         menuInflater.inflate(R.menu.detailspays,menu)
         super.onCreateOptionsMenu(menu)
         return true
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.action_sendinfo ->{
+        when(item.itemId) {
+            R.id.action_sendinfo -> {
                 Log.d("TEST", "testing")
                 runBlocking { synchro() }
             }
-            R.id.action_recherche_france ->{
-                Log.d("TEST", "Testing France")
-                val editText = EditText(this).apply {
-                    hint = "Entrez le nom ici"
-                }
-
-                AlertDialog.Builder(this).apply {
-                    setTitle("Recherchez un pays")
-                    setView(editText)
-                    setPositiveButton("OK") { _, _ ->
-                        val userInput = editText.text.toString()
-                        rechercheFrance(userInput)
-                    }
-                    setNegativeButton("Annuler", null)
-                }.show()
-            }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun rechercheFrance(paysNom: String) {
-
-        runBlocking {
-            try {
-                val paysFiltre = listeAllPays.filter { unPays -> unPays.commonName.contains(paysNom, ignoreCase = true)
-                        || unPays.capital.contains(paysNom, ignoreCase = true) }
-                Log.d(TAG, "synchro: ${paysFiltre}")
-                val adapter = PaysAdapter(paysFiltre)
-                recyclerView.adapter = adapter
-            }catch (e: Exception){
-                Log.e(TAG,"Erreur lors de la requête API : ${e.message}")
-            }
-        }
     }
 
     private suspend fun synchro() {
@@ -176,10 +112,10 @@ class ListPaysActivity : AppCompatActivity () {
                 )
             }
         }
-        val adapter = PaysAdapter(listeAllPays)
+        val ptiteliste : List<Pays> = listeAllPays.filter{ unPays -> unPays.commonName.contains("bel", ignoreCase = true) }
+        val adapter = JeuBonusAdapter(ptiteliste)
 
         recyclerView.adapter = adapter
 
     }
-
 }

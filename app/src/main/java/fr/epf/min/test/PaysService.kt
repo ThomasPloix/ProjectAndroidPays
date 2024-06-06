@@ -17,9 +17,12 @@ interface PaysService {
 data class Country(
     val name: Name,
     val region: String,
+    val subregion: String,
+    val languages: Map<String,String>,
     val capital: List<String>,
     val currencies: Map<String, Currency>,
     val population: Int,
+    val area: Double,
     val flags: Flags
 )
 data class Name(val common: String, val official: String)

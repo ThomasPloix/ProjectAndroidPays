@@ -10,9 +10,12 @@ data class Pays(
     val commonName: String,
     val officialName: String,
     val region: String,
+    val subregion: String,
+    val language: String,
     val capital: String,
     val currency: String,
     val population: Int,
+    val area: Double,
     val flagUrl: String
 ) : Parcelable {
     companion object {
@@ -22,9 +25,12 @@ data class Pays(
                 Pays("Nom${it}",
                     "Prénom${it}",
                     "region${it}",
+                    "subregion${it}",
+                    "langage${it}",
                     "capital${it}",
                     "currency${it}",
                     69,
+                    3939392.2,
                     "flag${it}")
             }
     }
