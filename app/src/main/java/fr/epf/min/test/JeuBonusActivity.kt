@@ -1,10 +1,15 @@
 package fr.epf.min.test
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.runBlocking
@@ -16,17 +21,49 @@ import java.util.concurrent.TimeUnit
 
 class JeuBonusActivity : AppCompatActivity() {
     private lateinit var listeAllPays: List<Pays>
+    private lateinit var listePaysGuess: ArrayList<Pays>
     private lateinit var recyclerView: RecyclerView
+    private lateinit var listView: ListView
+    private lateinit var searchView: SearchView
+    private lateinit var paysatrouver: Pays
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_jeu_bonus)
-        recyclerView = findViewById<RecyclerView>(R.id.jeu_bonus_recyclerview)
+        val paysGen = Pays.generate(2)
+        val paysNom = paysGen.map { it.commonName }
 
+        recyclerView = findViewById<RecyclerView>(R.id.jeu_bonus_recyclerview)
         recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter =JeuBonusAdapter(paysGen)
 
-        val pays = Pays.generate(10)
-        recyclerView.adapter =JeuBonusAdapter(pays)
+        listView = findViewById<ListView>(R.id.jeu_bonus_listView)
+        listePaysGuess = ArrayList<Pays>()
+        listView.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+            val nomPaysSelected = parent.getItemAtPosition(position) as String
+            val paysSelected = listeAllPays.filter { unPays -> unPays.commonName == nomPaysSelected }
+            listePaysGuess.add(0,paysSelected[0])
+            recyclerView.adapter = JeuBonusAdapter(listePaysGuess)
+        }
+        listView.adapter =  ArrayAdapter<String>(this, R.layout.activity_jeu_bonus_listview_item, paysNom)
+
+        searchView = findViewById(R.id.jeu_bonus_searchView)
+        searchView.clearFocus()
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus()
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null && newText.length > 1) {
+                    recherchePays(newText)
+                    listView.visibility = ListView.VISIBLE
+                } else {
+                    listView.visibility = ListView.GONE
+                }
+                return false
+            }
+        })
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.detailspays,menu)
@@ -70,18 +107,18 @@ class JeuBonusActivity : AppCompatActivity() {
 //
 
         try {
-            var pays = paysService.getAllPays()
+            val pays = paysService.getAllPays()
             //val pays = paysService.getUnPays("france")
             //val pays = paysService.getPaysBySubregion("Western Europe")
             Log.d(TAG, "synchro: ${pays}")
-            Affichage(pays)
+            MappingCountryPays(pays)
         }catch (e: Exception){
             Log.e(TAG,"Erreur lors de la requête API : ${e.message}")
         }
     }
 
 
-    private fun Affichage(countrys : List<Country>){
+    private fun MappingCountryPays(countrys : List<Country>){
         listeAllPays = countrys.map {
             try {
                 Pays(
@@ -112,10 +149,25 @@ class JeuBonusActivity : AppCompatActivity() {
                 )
             }
         }
-        val ptiteliste : List<Pays> = listeAllPays.filter{ unPays -> unPays.commonName.contains("bel", ignoreCase = true) }
-        val adapter = JeuBonusAdapter(ptiteliste)
+        randomPays(listeAllPays)
+    }
 
-        recyclerView.adapter = adapter
-
+    private fun randomPays(ptiteliste: List<Pays>) {
+        val random = (0..ptiteliste.size-1).random()
+        paysatrouver = ptiteliste[random]
+        Log.d(TAG, "randomPays: $paysatrouver")
+    }
+    private fun recherchePays(paysNom: String) {
+        runBlocking {
+            try {
+                val paysFiltre = listeAllPays.filter { unPays -> unPays.commonName.contains(paysNom, ignoreCase = true) }
+                Log.d(TAG, "synchro: ${paysFiltre}")
+                val paysfiltreNom = paysFiltre.map { it.commonName }
+                val adapter = ArrayAdapter<String>(this@JeuBonusActivity, R.layout.activity_jeu_bonus_listview_item, paysfiltreNom)
+                listView.adapter = adapter
+            }catch (e: Exception){
+                Log.e(TAG,"Erreur lors de la requête API : ${e.message}")
+            }
+        }
     }
 }

@@ -6,27 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="409dp"
-        android:layout_height="48dp"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/jeu_bonus_searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Enter text to filter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.065" />
+        app:layout_constraintVertical_bias="0.0" />
+
     <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
         android:layout_width="match_parent"
         android:layout_height="636dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner">
+        app:layout_constraintTop_toBottomOf="@+id/jeu_bonus_searchView"
+        app:layout_constraintVertical_bias="0.064">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/jeu_bonus_recyclerview"
@@ -34,8 +39,20 @@
             android:layout_height="match_parent"
             tools:itemCount="2"
             tools:listitem="@layout/activity_jeu_bonus_reponses">
+
         </androidx.recyclerview.widget.RecyclerView>
     </HorizontalScrollView>
+
+    <ListView
+        android:id="@+id/jeu_bonus_listView"
+        android:layout_width="293dp"
+        android:layout_height="420dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/jeu_bonus_searchView"
+        app:layout_constraintVertical_bias="0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
