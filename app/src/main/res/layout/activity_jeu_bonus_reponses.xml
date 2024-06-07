@@ -12,7 +12,7 @@
         android:layout_width="100dp"
         android:layout_height="120dp"
         android:layout_weight="1"
-        android:background="@drawable/baseline_square_24"
+        android:background="@drawable/baseline_square_24_red"
         android:gravity="center"
         android:text="France" />
 
@@ -20,7 +20,7 @@
         android:id="@+id/jeu_bonus_region"
         android:layout_width="100dp"
         android:layout_height="120dp"        android:layout_weight="1"
-        android:background="@drawable/baseline_square_24"
+        android:background="@drawable/baseline_square_24_red"
         android:gravity="center"
         android:text="Europe" />
 
@@ -28,7 +28,7 @@
         android:id="@+id/jeu_bonus_sous_region"
         android:layout_width="100dp"
         android:layout_height="120dp"        android:layout_weight="1"
-        android:background="@drawable/baseline_square_24"
+        android:background="@drawable/baseline_square_24_red"
         android:gravity="center"
         android:text="Europe de l'ouest" />
 
@@ -36,7 +36,7 @@
         android:id="@+id/jeu_bonus_capitale"
         android:layout_width="100dp"
         android:layout_height="120dp"        android:layout_weight="1"
-        android:background="@drawable/baseline_square_24"
+        android:background="@drawable/baseline_square_24_red"
         android:gravity="center"
         android:text="Paris" />
 
@@ -44,28 +44,28 @@
         android:id="@+id/jeu_bonus_monnaie"
         android:layout_width="100dp"
         android:layout_height="120dp"        android:layout_weight="1"
-        android:background="@drawable/baseline_square_24"
+        android:background="@drawable/baseline_square_24_red"
         android:gravity="center"
         android:text="Euro" />
     <TextView
         android:id="@+id/jeu_bonus_langages"
         android:layout_width="100dp"
         android:layout_height="120dp"        android:layout_weight="1"
-        android:background="@drawable/baseline_square_24"
+        android:background="@drawable/baseline_square_24_red"
         android:gravity="center"
         android:text="Français" />
     <TextView
         android:id="@+id/jeu_bonus_population"
         android:layout_width="100dp"
         android:layout_height="120dp"        android:layout_weight="1"
-        android:background="@drawable/baseline_square_24"
+        android:background="@drawable/baseline_square_24_red"
         android:gravity="center"
         android:text="69000000" />
     <TextView
         android:id="@+id/jeu_bonus_area"
         android:layout_width="100dp"
         android:layout_height="120dp"        android:layout_weight="1"
-        android:background="@drawable/baseline_square_24"
+        android:background="@drawable/baseline_square_24_red"
         android:gravity="center"
         android:text="18435604" />
 

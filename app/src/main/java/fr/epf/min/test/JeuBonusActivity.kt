@@ -1,6 +1,5 @@
 package fr.epf.min.test
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -8,6 +7,7 @@ import android.view.MenuItem
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,19 +31,27 @@ class JeuBonusActivity : AppCompatActivity() {
         setContentView(R.layout.activity_jeu_bonus)
         val paysGen = Pays.generate(2)
         val paysNom = paysGen.map { it.commonName }
+        paysatrouver = paysGen[0]
 
         recyclerView = findViewById<RecyclerView>(R.id.jeu_bonus_recyclerview)
         recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter =JeuBonusAdapter(paysGen)
+        recyclerView.adapter =JeuBonusAdapter(paysGen, paysatrouver)
 
         listView = findViewById<ListView>(R.id.jeu_bonus_listView)
         listePaysGuess = ArrayList<Pays>()
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+            searchView.setQuery("", false)
+            searchView.clearFocus()
             val nomPaysSelected = parent.getItemAtPosition(position) as String
             val paysSelected = listeAllPays.filter { unPays -> unPays.commonName == nomPaysSelected }
             listePaysGuess.add(0,paysSelected[0])
-            recyclerView.adapter = JeuBonusAdapter(listePaysGuess)
+            if (paysSelected[0].commonName== paysatrouver.commonName) {
+                Toast.makeText(this, "Bravo, vous avez trouvé le pays", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Dommage, ce n'est pas le pays recherché", Toast.LENGTH_SHORT).show()
+            }
+            recyclerView.adapter = JeuBonusAdapter(listePaysGuess, paysatrouver)
         }
         listView.adapter =  ArrayAdapter<String>(this, R.layout.activity_jeu_bonus_listview_item, paysNom)
 
@@ -65,6 +73,9 @@ class JeuBonusActivity : AppCompatActivity() {
             }
         })
     }
+
+
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.detailspays,menu)
         super.onCreateOptionsMenu(menu)
@@ -157,6 +168,7 @@ class JeuBonusActivity : AppCompatActivity() {
         paysatrouver = ptiteliste[random]
         Log.d(TAG, "randomPays: $paysatrouver")
     }
+
     private fun recherchePays(paysNom: String) {
         runBlocking {
             try {

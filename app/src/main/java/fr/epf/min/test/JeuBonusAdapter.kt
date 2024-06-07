@@ -4,9 +4,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class JeuBonusAdapter (private val pays : List<Pays>): RecyclerView.Adapter<PaysViewHolder>(){
+class JeuBonusAdapter (private val pays : List<Pays>, private val paysatrouver : Pays): RecyclerView.Adapter<PaysViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PaysViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -31,14 +32,77 @@ class JeuBonusAdapter (private val pays : List<Pays>): RecyclerView.Adapter<Pays
         val paysCapitaleTextView = view.findViewById<TextView>(R.id.jeu_bonus_capitale)
         paysCapitaleTextView.text= unPays.capital
         val paysMonnaieTextView = view.findViewById<TextView>(R.id.jeu_bonus_monnaie)
-        paysMonnaieTextView.text= unPays.currency
+        paysMonnaieTextView.text= unPays.currency.replace("{", "").replace("}", "")
         val paysLanguesTextView = view.findViewById<TextView>(R.id.jeu_bonus_langages)
-        paysLanguesTextView.text = unPays.language
+        paysLanguesTextView.text = unPays.language.replace("{", "").replace("}", "")
         val paysPopulationTextView = view.findViewById<TextView>(R.id.jeu_bonus_population)
         paysPopulationTextView.text = unPays.population.toString()
         val paysSurfaceTextView = view.findViewById<TextView>(R.id.jeu_bonus_area)
         paysSurfaceTextView.text = unPays.area.toString()
 
+        if (unPays.commonName==paysatrouver.commonName) {
+            paysNameTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_green)
+        }
+        else if (unPays.commonName[0]==paysatrouver.commonName[0]){
+            paysNameTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_orange)
+        }
+        if (unPays.region==paysatrouver.region) {
+            paysRegionTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_green)
+        }
+        else{
+            paysRegionTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_red)
+        }
+        if (unPays.subregion==paysatrouver.subregion) {
+            paysSousRegionTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_green)
+        }
+        else{
+            paysSousRegionTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_red)
+        }
+        if (unPays.capital==paysatrouver.capital) {
+            paysCapitaleTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_green)
+        }
+        else if (unPays.capital[0]==paysatrouver.capital[0]) {
+            paysCapitaleTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_orange)
+        }
+        else{
+            paysCapitaleTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_red)
+        }
+        if (unPays.currency==paysatrouver.currency) {
+            paysMonnaieTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_green)
+        }
+        else if (paysatrouver.currency.contains(unPays.currency.replace("{", "").replace("}", ""))) {
+            paysMonnaieTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_orange)
+        }
+        else{
+            paysMonnaieTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_red)
+        }
+        if (unPays.language==paysatrouver.language) {
+            paysLanguesTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_green)
+        }
+        else if (paysatrouver.language.contains(unPays.language.replace("{", "").replace("}", ""))) {
+            paysLanguesTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_orange)
+        }
+        else{
+            paysLanguesTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_red)
+        }
+        if (unPays.area == paysatrouver.area) {
+            paysSurfaceTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_green)
+        }
+        else if (unPays.area<paysatrouver.area) {
+            paysSurfaceTextView.background = view.resources.getDrawable(R.drawable.baseline_arrow_upward_24)
+        }
+        else{
+            paysSurfaceTextView.background = view.resources.getDrawable(R.drawable.baseline_arrow_downward_24)
+        }
+        if (unPays.population == paysatrouver.population) {
+            paysPopulationTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_green)
+        }
+        else if (unPays.population<paysatrouver.population) {
+            paysPopulationTextView.background = view.resources.getDrawable(R.drawable.baseline_arrow_upward_24)
+        }
+        else{
+            paysPopulationTextView.background = view.resources.getDrawable(R.drawable.baseline_arrow_downward_24)
+        }
 
     }
 }

@@ -21,8 +21,8 @@
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="636dp"
+        android:layout_width="425dp"
+        android:layout_height="674dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="1dp"
@@ -31,16 +31,86 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/jeu_bonus_searchView"
-        app:layout_constraintVertical_bias="0.064">
+        app:layout_constraintVertical_bias="0.0">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/jeu_bonus_recyclerview"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:itemCount="2"
-            tools:listitem="@layout/activity_jeu_bonus_reponses">
+            android:orientation="vertical">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/jeu_bonus_nom_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="70dp"
+                    android:layout_weight="1"
+                    android:text="Nom" />
+                <TextView
+                    android:id="@+id/jeu_bonus_region_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:layout_weight="1"
+                    android:text="Region" />
+                <TextView
+                    android:id="@+id/jeu_bonus_sousregion_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="40dp"
+                    android:layout_weight="1"
+                    android:text="Sous - Region" />
+                <TextView
+                    android:id="@+id/jeu_bonus_capitale_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="60dp"
+                    android:layout_weight="1"
+                    android:text="Capitale" />
+                <TextView
+                    android:id="@+id/jeu_bonus_monnaie_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="60dp"
+                    android:layout_weight="1"
+                    android:text="Monnaie" />
+                <TextView
+                    android:id="@+id/jeu_bonus_langues_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:layout_weight="1"
+                    android:text="Langage" />
+                <TextView
+                    android:id="@+id/jeu_bonus_population_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:layout_weight="1"
+                    android:text="Population" />
+                <TextView
+                    android:id="@+id/jeu_bonus_area_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="40dp"
+                    android:layout_weight="1"
+                    android:text="Taille (m2)" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/jeu_bonus_recyclerview"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                tools:itemCount="2"
+                tools:listitem="@layout/activity_jeu_bonus_reponses">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
     </HorizontalScrollView>
 
     <ListView
