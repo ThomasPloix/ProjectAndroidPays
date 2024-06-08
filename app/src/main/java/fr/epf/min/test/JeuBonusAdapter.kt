@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import java.util.regex.Pattern
 
 class JeuBonusAdapter (private val pays : List<Pays>, private val paysatrouver : Pays): RecyclerView.Adapter<PaysViewHolder>(){
 
@@ -23,6 +24,12 @@ class JeuBonusAdapter (private val pays : List<Pays>, private val paysatrouver :
         Log.d(TAG, unPays.toString())
         val view = holder.itemView
 
+        val pattern = Regex("""name=([^,]*)""")
+
+        val currencyName = pattern.find(unPays.currency)?.let {
+            it.groupValues[1]
+        } ?: "Euroo"
+
         val paysNameTextView = view.findViewById<TextView>(R.id.jeu_bonus_nom_pays)
         paysNameTextView.text= unPays.commonName
         val paysRegionTextView = view.findViewById<TextView>(R.id.jeu_bonus_region)
@@ -32,13 +39,13 @@ class JeuBonusAdapter (private val pays : List<Pays>, private val paysatrouver :
         val paysCapitaleTextView = view.findViewById<TextView>(R.id.jeu_bonus_capitale)
         paysCapitaleTextView.text= unPays.capital
         val paysMonnaieTextView = view.findViewById<TextView>(R.id.jeu_bonus_monnaie)
-        paysMonnaieTextView.text= unPays.currency.replace("{", "").replace("}", "")
+        paysMonnaieTextView.text= currencyName
         val paysLanguesTextView = view.findViewById<TextView>(R.id.jeu_bonus_langages)
         paysLanguesTextView.text = unPays.language.replace("{", "").replace("}", "")
         val paysPopulationTextView = view.findViewById<TextView>(R.id.jeu_bonus_population)
-        paysPopulationTextView.text = unPays.population.toString()
+        paysPopulationTextView.text = "${unPays.population/1000000} M"
         val paysSurfaceTextView = view.findViewById<TextView>(R.id.jeu_bonus_area)
-        paysSurfaceTextView.text = unPays.area.toString()
+        paysSurfaceTextView.text = "${unPays.area} km²"
 
         if (unPays.commonName==paysatrouver.commonName) {
             paysNameTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_green)
