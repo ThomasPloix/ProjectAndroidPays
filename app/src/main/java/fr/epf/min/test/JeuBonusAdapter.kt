@@ -4,9 +4,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
+
 import androidx.recyclerview.widget.RecyclerView
-import java.util.regex.Pattern
 
 class JeuBonusAdapter (private val pays : List<Pays>, private val paysatrouver : Pays): RecyclerView.Adapter<PaysViewHolder>(){
 

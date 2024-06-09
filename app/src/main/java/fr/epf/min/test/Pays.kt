@@ -16,7 +16,8 @@ data class Pays(
     val currency: String,
     val population: Int,
     val area: Double,
-    val flagUrl: String
+    val flagUrl: String,
+    var favori: Boolean
 ) : Parcelable {
     companion object {
 
@@ -31,7 +32,8 @@ data class Pays(
                     "currency${it}",
                     69,
                     3939392.2,
-                    "flag${it}")
+                    "flag${it}",
+                    false)
             }
     }
 

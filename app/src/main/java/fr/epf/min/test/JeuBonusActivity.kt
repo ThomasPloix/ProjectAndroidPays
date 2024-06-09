@@ -166,7 +166,8 @@ class JeuBonusActivity : AppCompatActivity() {
                     it.currencies.map{ e-> e.key to e.value.toString() }.toMap().toString(),
                     it.population,
                     it.area,
-                    it.flags.png
+                    it.flags.png,
+                    false
                 )
             }catch (e: Exception){
                 Log.e(TAG, "Erreur lors de la transformation de l'objet Pays: ${e.message} + $it")
@@ -180,7 +181,8 @@ class JeuBonusActivity : AppCompatActivity() {
                     it.currencies?.toString() ?: "Monnaies inconnues",
                     it.population ?: 0,
                     it.area ?: 0.0,
-                    it.flags?.png ?: ""
+                    it.flags?.png ?: "",
+                    false
                 )
             }
         }

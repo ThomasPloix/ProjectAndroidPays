@@ -7,4 +7,5 @@
     <string name="pays_capital">Capitale</string>
     <string name="pays_flag">Drapeau</string>
     <string name="pays_currency">Currency</string>
+    <string name="menu_search">recherche</string>
 </resources>

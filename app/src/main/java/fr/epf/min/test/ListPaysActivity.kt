@@ -2,23 +2,24 @@ package fr.epf.min.test
 
 
 
-import android.app.AlertDialog
+
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 
 import android.view.MenuItem
-import android.widget.EditText
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 const val TAG = "TEST_PAYS"
@@ -38,7 +39,14 @@ class ListPaysActivity : AppCompatActivity () {
         recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        val pays = Pays.generate(1)
+
+        lifecycleScope.launch {
+            DataStoreRepo.read(this@ListPaysActivity)
+            Log.d("TEST",DataStoreRepo.FavoriteCountries.toString())
+        }
+
+        val pays = DataStoreRepo.FavoriteCountries
+
         recyclerView.adapter =PaysAdapter(pays)
         searchView = findViewById(R.id.search)
         searchView.clearFocus()
@@ -112,15 +120,12 @@ class ListPaysActivity : AppCompatActivity () {
         val paysService =
             retrofit.create(PaysService::class.java)
 
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val users = userService.getUsers(15)
-//        }
+//
 //
 
         try {
-            var pays = paysService.getAllPays()
-            //val pays = paysService.getUnPays("france")
-            //val pays = paysService.getPaysBySubregion("Western Europe")
+            val pays = paysService.getAllPays()
+
             Log.d(TAG, "synchro: ${pays}")
             Affichage(pays)
         }catch (e: Exception){
@@ -142,7 +147,8 @@ class ListPaysActivity : AppCompatActivity () {
                     it.currencies.map{ e-> e.key to e.value.toString() }.toMap().toString(),
                     it.population,
                     it.area,
-                    it.flags.png
+                    it.flags.png,
+                    false
                 )
             }catch (e: Exception){
                 Log.e(TAG, "Erreur lors de la transformation de l'objet Pays: ${e.message} + $it")
@@ -156,7 +162,8 @@ class ListPaysActivity : AppCompatActivity () {
                     it.currencies?.toString() ?: "Monnaies inconnues",
                     it.population ?: 0,
                     it.area ?: 0.0,
-                    it.flags?.png ?: ""
+                    it.flags?.png ?: "",
+                    false
                 )
             }
         }
