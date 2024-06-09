@@ -24,11 +24,19 @@ class JeuBonusAdapter (private val pays : List<Pays>, private val paysatrouver :
         Log.d(TAG, unPays.toString())
         val view = holder.itemView
 
-        val pattern = Regex("""name=([^,]*)""")
+        val patternCurrency = Regex("""name=([^,]*)""")
 
-        val currencyName = pattern.find(unPays.currency)?.let {
+        val currencyName = patternCurrency.find(unPays.currency)?.let {
             it.groupValues[1]
         } ?: "Euroo"
+
+        val patternLangues = Regex("""=(.*?)(,|\})""")
+        var languesName: String = "Françaiss"
+        patternLangues.findAll(unPays.language).let { matches ->
+            languesName = matches.map{ it.groupValues[1] }.joinToString(", ")
+        }
+        val paysPop = String.format("%.2f",unPays.population.toDouble()/1000000)
+
 
         val paysNameTextView = view.findViewById<TextView>(R.id.jeu_bonus_nom_pays)
         paysNameTextView.text= unPays.commonName
@@ -41,11 +49,11 @@ class JeuBonusAdapter (private val pays : List<Pays>, private val paysatrouver :
         val paysMonnaieTextView = view.findViewById<TextView>(R.id.jeu_bonus_monnaie)
         paysMonnaieTextView.text= currencyName
         val paysLanguesTextView = view.findViewById<TextView>(R.id.jeu_bonus_langages)
-        paysLanguesTextView.text = unPays.language.replace("{", "").replace("}", "")
+        paysLanguesTextView.text = languesName
         val paysPopulationTextView = view.findViewById<TextView>(R.id.jeu_bonus_population)
-        paysPopulationTextView.text = "${unPays.population/1000000} M"
+        paysPopulationTextView.text = "${paysPop} M"
         val paysSurfaceTextView = view.findViewById<TextView>(R.id.jeu_bonus_area)
-        paysSurfaceTextView.text = "${unPays.area} km²"
+        paysSurfaceTextView.text = "${unPays.area.toInt()} km²"
 
         if (unPays.commonName==paysatrouver.commonName) {
             paysNameTextView.background = view.resources.getDrawable(R.drawable.baseline_square_24_green)

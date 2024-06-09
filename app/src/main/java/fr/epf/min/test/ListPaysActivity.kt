@@ -72,22 +72,6 @@ class ListPaysActivity : AppCompatActivity () {
                 Log.d("TEST", "testing")
                 runBlocking { synchro() }
             }
-            R.id.action_recherche_france ->{
-                Log.d("TEST", "Testing France")
-                val editText = EditText(this).apply {
-                    hint = "Entrez le nom ici"
-                }
-
-                AlertDialog.Builder(this).apply {
-                    setTitle("Recherchez un pays")
-                    setView(editText)
-                    setPositiveButton("OK") { _, _ ->
-                        val userInput = editText.text.toString()
-                        rechercheFrance(userInput)
-                    }
-                    setNegativeButton("Annuler", null)
-                }.show()
-            }
         }
         return super.onOptionsItemSelected(item)
     }
