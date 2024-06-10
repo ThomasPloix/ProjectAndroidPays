@@ -50,56 +50,56 @@
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="70dp"
                     android:layout_weight="1"
-                    android:text="Nom" />
+                    android:text="@string/nom" />
                 <TextView
                     android:id="@+id/jeu_bonus_region_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="50dp"
                     android:layout_weight="1"
-                    android:text="Region" />
+                    android:text="@string/region" />
                 <TextView
                     android:id="@+id/jeu_bonus_sousregion_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="40dp"
                     android:layout_weight="1"
-                    android:text="Sous - Region" />
+                    android:text="@string/sous_region" />
                 <TextView
                     android:id="@+id/jeu_bonus_capitale_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="60dp"
                     android:layout_weight="1"
-                    android:text="Capitale" />
+                    android:text="@string/capitale" />
                 <TextView
                     android:id="@+id/jeu_bonus_monnaie_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="60dp"
                     android:layout_weight="1"
-                    android:text="Monnaie" />
+                    android:text="@string/monnaie" />
                 <TextView
                     android:id="@+id/jeu_bonus_langues_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="50dp"
                     android:layout_weight="1"
-                    android:text="Langage" />
+                    android:text="@string/langage" />
                 <TextView
                     android:id="@+id/jeu_bonus_population_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="50dp"
                     android:layout_weight="1"
-                    android:text="Population" />
+                    android:text="@string/population" />
                 <TextView
                     android:id="@+id/jeu_bonus_area_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="40dp"
                     android:layout_weight="1"
-                    android:text="Taille (m2)" />
+                    android:text="@string/taille_km2" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

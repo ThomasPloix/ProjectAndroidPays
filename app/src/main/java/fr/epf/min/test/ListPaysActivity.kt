@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 
 import android.view.MenuItem
+import android.widget.Toast
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -22,7 +23,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
-const val TAG = "TEST_PAYS"
+const val TAGAPI = "API_PAYS"
+const val TAGRECUPPAYS = "READ_PAYS"
+const val TAGSAVEPAYS = "SAVE_LOAD_PAYS"
 
 class ListPaysActivity : AppCompatActivity () {
 
@@ -42,7 +45,7 @@ class ListPaysActivity : AppCompatActivity () {
 
         lifecycleScope.launch {
             DataStoreRepo.read(this@ListPaysActivity)
-            Log.d("TEST",DataStoreRepo.FavoriteCountries.toString())
+            Log.d(TAGSAVEPAYS,DataStoreRepo.FavoriteCountries.toString())
         }
 
         val pays = DataStoreRepo.FavoriteCountries
@@ -68,7 +71,6 @@ class ListPaysActivity : AppCompatActivity () {
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        Log.d("TEST","Creat")
         menuInflater.inflate(R.menu.detailspays,menu)
         super.onCreateOptionsMenu(menu)
         return true
@@ -77,7 +79,6 @@ class ListPaysActivity : AppCompatActivity () {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.action_sendinfo ->{
-                Log.d("TEST", "testing")
                 runBlocking { synchro() }
             }
         }
@@ -90,11 +91,14 @@ class ListPaysActivity : AppCompatActivity () {
             try {
                 val paysFiltre = listeAllPays.filter { unPays -> unPays.commonName.contains(paysNom, ignoreCase = true)
                         || unPays.capital.contains(paysNom, ignoreCase = true) }
-                Log.d(TAG, "synchro: ${paysFiltre}")
+                Log.d(TAGAPI, "synchro: ${paysFiltre}")
                 val adapter = PaysAdapter(paysFiltre)
                 recyclerView.adapter = adapter
             }catch (e: Exception){
-                Log.e(TAG,"Erreur lors de la requête API : ${e.message}")
+
+                val text = "Erreur lors de la requête API : ${e.message}"
+                Log.e(TAGAPI,text)
+                Toast.makeText(this@ListPaysActivity,text,Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -120,16 +124,15 @@ class ListPaysActivity : AppCompatActivity () {
         val paysService =
             retrofit.create(PaysService::class.java)
 
-//
-//
-
         try {
-            val pays = paysService.getAllPays()
+            val paysAPI = paysService.getAllPays()
 
-            Log.d(TAG, "synchro: ${pays}")
-            Affichage(pays)
+            Log.d(TAGAPI, "synchro: ${paysAPI}")
+            Affichage(paysAPI)
         }catch (e: Exception){
-            Log.e(TAG,"Erreur lors de la requête API : ${e.message}")
+            val text = "Erreur lors de la requête API : ${e.message}"
+            Log.e(TAGAPI,text)
+            Toast.makeText(this@ListPaysActivity,text,Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -151,7 +154,7 @@ class ListPaysActivity : AppCompatActivity () {
                     false
                 )
             }catch (e: Exception){
-                Log.e(TAG, "Erreur lors de la transformation de l'objet Pays: ${e.message} + $it")
+                Log.e(TAGRECUPPAYS, "Erreur lors de la transformation de l'objet Pays: ${e.message} + $it")
                 Pays(
                     it.name.common ?: "Nom inconnu",
                     it.name.official ?: "Nom officiel inconnu",
@@ -167,6 +170,13 @@ class ListPaysActivity : AppCompatActivity () {
                 )
             }
         }
+        val paysFavori= DataStoreRepo.FavoriteCountries
+        listeAllPays.forEach { pays ->
+            if (paysFavori.contains(pays)) {
+                pays.favori=true
+            }
+        }
+
         val adapter = PaysAdapter(listeAllPays)
 
         recyclerView.adapter = adapter

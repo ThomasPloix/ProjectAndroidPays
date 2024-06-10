@@ -6,6 +6,16 @@
     <string name="pays_region">Région</string>
     <string name="pays_capital">Capitale</string>
     <string name="pays_flag">Drapeau</string>
-    <string name="pays_currency">Currency</string>
+    <string name="pays_currency">Monnaie</string>
     <string name="menu_search">recherche</string>
+    <string name="langues">Langues</string>
+    <string name="population">Population</string>
+    <string name="superficie">Superficie</string>
+    <string name="nom">Nom</string>
+    <string name="region">Region</string>
+    <string name="sous_region">Sous - Region</string>
+    <string name="capitale">Capitale</string>
+    <string name="monnaie">Monnaie</string>
+    <string name="langage">Langage</string>
+    <string name="taille_km2">Taille (km2)</string>
 </resources>

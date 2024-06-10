@@ -30,11 +30,12 @@ class PaysAdapter (private val pays : List<Pays>): RecyclerView.Adapter<PaysView
 
     override fun onBindViewHolder(holder: PaysViewHolder, position: Int) {
         val unPays = pays[position]
-        Log.d(TAG, unPays.toString())
         val view = holder.itemView
 
         val paysNameTextView = view.findViewById<TextView>(R.id.shortdetailspays_paysname_text)
         paysNameTextView.text= unPays.commonName
+        val paysCapitaleTextView = view.findViewById<TextView>(R.id.shortdetailspays_payscapitale_text)
+        paysCapitaleTextView.text= unPays.capital
         val imageView = view.findViewById<ImageView>(R.id.shortdetailpays_flag_ImageView)
 
         Glide.with(view).load(unPays.flagUrl).into(imageView)
@@ -43,9 +44,7 @@ class PaysAdapter (private val pays : List<Pays>): RecyclerView.Adapter<PaysView
         checkBox.isChecked = unPays.favori
 
         checkBox.setOnClickListener {
-            // Votre code à exécuter lorsque la CheckBox est cliquée
             if (checkBox.isChecked) {
-                Log.d(TAG, "onBindViewHolder: CHECK")
                 unPays.favori=true
                 runBlocking{
                     launch {
@@ -55,13 +54,13 @@ class PaysAdapter (private val pays : List<Pays>): RecyclerView.Adapter<PaysView
 
 
             } else {
-                Log.d(TAG, "onBindViewHolder: PASCHECK")
                 unPays.favori=false
-//                runBlocking {
-//                    launch {
-//                        DataStoreRepo(it.context).save(FavoriteCountries)
-//                    }
-//                }
+                runBlocking {
+                    launch {
+                        DataStoreRepo.FavoriteCountries.remove(unPays)
+                        DataStoreRepo.save(it.context)
+                    }
+                }
             }
         }
 

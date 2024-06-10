@@ -26,12 +26,15 @@ import java.util.concurrent.TimeUnit
 
 
 class JeuBonusActivity : AppCompatActivity() {
+
     private lateinit var listeAllPays: List<Pays>
     private lateinit var listePaysGuess: ArrayList<Pays>
     private lateinit var recyclerView: RecyclerView
     private lateinit var listView: ListView
     private lateinit var searchView: SearchView
     private lateinit var paysatrouver: Pays
+     val TAG ="JEUBONUS"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_jeu_bonus)
@@ -145,10 +148,12 @@ class JeuBonusActivity : AppCompatActivity() {
             val pays = paysService.getAllPays()
             //val pays = paysService.getUnPays("france")
             //val pays = paysService.getPaysBySubregion("Western Europe")
-            Log.d(TAG, "synchro: ${pays}")
+            Log.d(TAGAPI, "synchro: ${pays}")
             MappingCountryPays(pays)
         }catch (e: Exception){
-            Log.e(TAG,"Erreur lors de la requête API : ${e.message}")
+            val text = "Erreur lors de la requête API : ${e.message}"
+            Log.e(TAGAPI,text)
+            Toast.makeText(this@JeuBonusActivity,text,Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -170,7 +175,7 @@ class JeuBonusActivity : AppCompatActivity() {
                     false
                 )
             }catch (e: Exception){
-                Log.e(TAG, "Erreur lors de la transformation de l'objet Pays: ${e.message} + $it")
+                Log.e(TAGRECUPPAYS, "Erreur lors de la transformation de l'objet Pays: ${e.message} + $it")
                 Pays(
                     it.name.common ?: "Nom inconnu",
                     it.name.official ?: "Nom officiel inconnu",

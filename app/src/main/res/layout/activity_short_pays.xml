@@ -35,11 +35,25 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:fontFamily="sans-serif-black"
                 android:text="France"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/shortdetailpays_flag_ImageView"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.35"
                 tools:text="France" />
+
+            <TextView
+                android:id="@+id/shortdetailspays_payscapitale_text"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="Paris"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/shortdetailpays_flag_ImageView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.65"
+                tools:text="Paris" />
 
             <CheckBox
                 android:id="@+id/shortdetailspays_favory_checkbox"

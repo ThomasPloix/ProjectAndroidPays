@@ -21,29 +21,17 @@ class MainActivity : AppCompatActivity () {
 
         val detailsButton = findViewById<Button>(R.id.home_detailspays_button)
         val jeubonusButton = findViewById<Button>(R.id.home_jeubonus_button)
-        val favoriButton = findViewById<Button>(R.id.home_favori_button)
 
         detailsButton.setOnClickListener(){
             val intent = Intent(this, ListPaysActivity::class.java)
-            Log.d("TEST","Click")
-
             startActivity(intent)
         }
         jeubonusButton.setOnClickListener(){
             val intent = Intent(this, JeuBonusActivity::class.java)
-            Log.d("TEST","Click")
-
             startActivity(intent)
         }
 
 
-        favoriButton.setOnClickListener(){
-            lifecycleScope.launch {
-               DataStoreRepo.read(this@MainActivity)
-                Log.d("TEST",DataStoreRepo.FavoriteCountries.toString())
-            }
-
-        }
     }
 
 

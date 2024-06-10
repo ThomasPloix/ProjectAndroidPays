@@ -20,7 +20,7 @@ class JeuBonusAdapter (private val pays : List<Pays>, private val paysatrouver :
 
     override fun onBindViewHolder(holder: PaysViewHolder, position: Int) {
         val unPays = pays[position]
-        Log.d(TAG, unPays.toString())
+
         val view = holder.itemView
 
         val patternCurrency = Regex("""name=([^,]*)""")
